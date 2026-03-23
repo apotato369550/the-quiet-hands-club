@@ -1,53 +1,101 @@
+import Image from 'next/image'
 import Link from 'next/link'
-import { getAllDeeds, getAllStewardNotes } from '@/lib/content'
-import DeedCard from '@/components/DeedCard'
-import StewardCard from '@/components/StewardCard'
+import { getAllEntries, formatDate } from '@/lib/content'
+import ContactForm from '@/components/ContactForm'
 
 export default async function Home() {
-  const [deeds, stewardNotes] = await Promise.all([getAllDeeds(), getAllStewardNotes()])
-  const latestDeeds = deeds.slice(0, 3)
-  const latestSteward = stewardNotes.slice(0, 2)
+  const entries = await getAllEntries()
+  const recent = entries.slice(0, 4)
 
   return (
-    <main className="max-w-4xl mx-auto px-6 py-20">
-      {/* Intro block */}
-      <div className="mb-20">
-        <h1 className="font-serif text-4xl font-normal leading-snug text-brand-text-primary mb-6 max-w-xl">
-          A record of quiet things done without witness.
+    <main className="py-20">
+
+      {/* Hero */}
+      <section className="flex flex-col items-center text-center mb-24">
+        <Image
+          src="/logo.png"
+          alt="The Quiet Hands Club"
+          width={140}
+          height={140}
+          className="mb-8 rounded-full"
+          priority
+        />
+        <h1 className="font-serif text-2xl font-normal tracking-[0.12em] uppercase text-brand-cream mb-4">
+          The Quiet Hands Club
         </h1>
-        <p className="text-sm text-brand-text-muted leading-relaxed max-w-md">
-          Good deeds recorded here are not performances. They are reports. Anonymous, unverified,
-          submitted in private. Collected because someone thought they should exist somewhere.
+        <p className="font-sans text-sm text-brand-text-muted tracking-wide max-w-xs leading-relaxed">
+          A record of quiet things done without witness.
         </p>
+      </section>
+
+      {/* What is this? */}
+      <section className="mb-24 max-w-prose mx-auto">
+        <h2 className="font-sans text-[10px] tracking-[0.3em] uppercase text-brand-text-faint mb-8 text-center">
+          What is this?
+        </h2>
+        <div className="font-serif text-base text-brand-text-muted leading-[1.9] space-y-5">
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+          </p>
+          <p>
+            Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+          </p>
+          <p>
+            Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet consectetur adipisci velit.
+          </p>
+        </div>
+      </section>
+
+      {/* Divider */}
+      <div className="flex justify-center mb-24">
+        <span className="text-brand-text-faint opacity-20 tracking-[0.5em] text-xs">* * *</span>
       </div>
 
-      {/* Latest Deeds section */}
-      <div className="mb-16">
-        <h2 className="text-xs tracking-widest uppercase text-brand-text-faint mb-6 border-b border-brand-border pb-2">
-          Recent Deeds
+      {/* Recent Entries */}
+      <section className="mb-24">
+        <h2 className="font-sans text-[10px] tracking-[0.3em] uppercase text-brand-text-faint mb-8">
+          Recent Entries
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-brand-border">
-          {latestDeeds.map((deed) => (
-            <div key={deed.slug} className="bg-brand-bg">
-              <DeedCard post={deed} />
-            </div>
+        <div className="flex flex-col">
+          {recent.map((entry) => (
+            <Link key={entry.slug} href={`/entries/${entry.slug}`} className="flex items-baseline justify-between py-5 border-b border-brand-border group hover:bg-brand-surface -mx-6 px-6 transition-colors duration-150">
+              <div className="flex-1 pr-8">
+                <p className="font-serif text-lg font-normal text-brand-text-primary leading-snug mb-1 group-hover:text-brand-cream transition-colors duration-200">
+                  {entry.title}
+                </p>
+                <p className="font-sans text-xs text-brand-text-muted leading-relaxed">
+                  {entry.excerpt}
+                </p>
+              </div>
+              <time className="font-sans text-xs text-brand-text-faint shrink-0 tabular-nums">
+                {formatDate(entry.date)}
+              </time>
+            </Link>
           ))}
         </div>
-      </div>
+        <div className="mt-8">
+          <Link
+            href="/entries"
+            className="font-sans text-xs tracking-[0.25em] uppercase text-brand-text-muted hover:text-brand-text-primary transition-colors duration-200"
+          >
+            All entries →
+          </Link>
+        </div>
+      </section>
 
-      {/* Latest Steward section */}
-      <div>
-        <h2 className="text-xs tracking-widest uppercase text-brand-text-faint mb-6 border-b border-brand-border pb-2">
-          From the Steward
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-brand-border">
-          {latestSteward.map((note) => (
-            <div key={note.slug} className="bg-brand-bg">
-              <StewardCard post={note} />
-            </div>
-          ))}
+      {/* Contact CTA */}
+      <section className="mt-40 mb-4">
+        <div className="bg-brand-surface px-10 py-12">
+          <h2 className="font-sans text-[10px] tracking-[0.3em] uppercase text-brand-text-faint mb-6 text-center">
+            Submit a deed
+          </h2>
+          <p className="font-serif text-sm text-brand-text-muted italic text-center mb-10 leading-relaxed">
+            Write down what happened. Keep it simple. No names needed.
+          </p>
+          <ContactForm />
         </div>
-      </div>
+      </section>
+
     </main>
   )
 }

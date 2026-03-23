@@ -30,7 +30,9 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
       <body className="min-h-screen flex flex-col bg-brand-bg text-brand-text-primary font-sans antialiased">
         <Nav />
-        {children}
+        <div className="w-[75%] max-w-[1200px] mx-auto flex-1">
+          {children}
+        </div>
         <Footer />
       </body>
     </html>

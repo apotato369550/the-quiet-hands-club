@@ -13,6 +13,7 @@
   --color-brand-accent-blue-dim: #1d4ed8;
   --color-brand-accent-green: #22c55e;
   --color-brand-accent-green-dim: #15803d;
+  --color-brand-cream: #d4c4a0;
 
   /* Font families */
   --font-sans: 'Inter', ui-sans-serif, system-ui;
@@ -21,7 +22,7 @@
 
 /* Prose (typography) theming */
 .prose {
-  --tw-prose-body: #c4c4c4;
+  --tw-prose-body: #c8bfa8;
   --tw-prose-headings: #e8e8e8;
   --tw-prose-lead: #6b6b6b;
   --tw-prose-links: #3b82f6;
